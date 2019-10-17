@@ -1,6 +1,10 @@
 #pragma once
 #include "main.h"
 
+enum class screenMode{
+  disabled, notification, selection
+};
+
 namespace robot {
 
 extern okapi::Controller controller;
@@ -15,5 +19,11 @@ extern std::shared_ptr<okapi::ADIEncoder> rEnc;
 extern std::shared_ptr<okapi::ADIEncoder> mEnc;
 
 extern std::shared_ptr<okapi::OdomChassisController> chassis;
+
+namespace screen{
+  extern pros::Task *controller;
+  extern volatile screenMode state;
+  extern std::string notification;
+};
 
 }

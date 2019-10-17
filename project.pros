@@ -281,6 +281,25 @@
                 "target": "v5",
                 "user_files": [],
                 "version": "4.0.0-RC3"
+            },
+            "screenlib": {
+                "location": "/home/jspen/.config/pros/templates/screenlib@1.0.1",
+                "metadata": {
+                    "origin": "local"
+                },
+                "name": "screenlib",
+                "py/object": "pros.conductor.templates.local_template.LocalTemplate",
+                "supported_kernels": "^3.1.6",
+                "system_files": [
+                    "firmware/screenlib.a",
+                    "include/screen/fields/ttField.hpp",
+                    "include/screen/api.hpp",
+                    "include/screen/resources.hpp",
+                    "include/screen/fields/baseField.hpp"
+                ],
+                "target": "v5",
+                "user_files": [],
+                "version": "1.0.1"
             }
         },
         "upload_options": {}

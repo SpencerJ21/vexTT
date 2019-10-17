@@ -2,8 +2,6 @@
 
 namespace robot {
 
-using namespace okapi::literals;
-
 okapi::Controller controller;
 
 std::shared_ptr<okapi::Motor> angler;
@@ -16,5 +14,11 @@ std::shared_ptr<okapi::ADIEncoder> rEnc;
 std::shared_ptr<okapi::ADIEncoder> mEnc;
 
 std::shared_ptr<okapi::OdomChassisController> chassis;
+
+namespace screen {
+  pros::Task *controller;
+  volatile screenMode state;
+  std::string notification;
+}
 
 }

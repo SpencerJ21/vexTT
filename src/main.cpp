@@ -1,7 +1,10 @@
 #include "main.h"
 #include "robot.hpp"
+#include "routines.hpp"
 
 using namespace okapi::literals;
+
+extern void screenControllerFN(void* param);
 
 inline void initChassis(){
   robot::chassis = okapi::ChassisControllerBuilder()
@@ -29,15 +32,20 @@ void initialize() {
 
   robot::angler->setBrakeMode(okapi::AbstractMotor::brakeMode::brake);
   robot::angler->setGearing(okapi::AbstractMotor::gearset::red);
+
+  robot::screen::controller = new pros::Task(screenControllerFN, NULL, "Screen");
+  robot::screen::state = screenMode::notification;
 }
 
 void disabled() {}
 
-void competition_initialize() {}
+void competition_initialize() {
+  robot::screen::state = screenMode::selection;
+}
 
 void autonomous() {
   if(!robot::chassis) initChassis();
-
+  routines.at(selection).run();
 }
 
 void opcontrol() {
