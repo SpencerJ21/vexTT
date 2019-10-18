@@ -34,7 +34,8 @@ void initialize() {
   robot::angler->setGearing(okapi::AbstractMotor::gearset::red);
 
   robot::screen::controller = new pros::Task(screenControllerFN, NULL, "Screen");
-  robot::screen::state = screenMode::notification;
+  robot::screen::notification =
+  " it's a beautiful day outside. birds are singing, flowers are blooming... on days like these, kids like you...   Should be burning in hell.    huh. always wondered why people never use their strongest attack first.    anyway, as i was saying, it's a nice day out. why not relax and take a load off? ready? here we go. what? you think i'm just gonna stand there and take it?    our reports showed a massive anomaly in the timespace continuum. timelines jumping left and right, stopping and starting...    until suddenly, everything ends.    heh heh heh... that's your fault isn't it?    you can't understand how this feels.    knowing that one day, without any warning... it's all going to be reset.    look. i gave up trying to go back a long time ago.    and getting to the surface doesn't really appeal anymore, either.    cause even if we do... we'll just end up right back here, without any memory of it, right?    to be blunt... it makes it kind of hard to give it my all.    ... or is that just a poor excuse for being lazy...? hell if i know.    all i know is... seeing what comes next... i can't afford not to care anymore. ";
 }
 
 void disabled() {}
@@ -45,14 +46,16 @@ void competition_initialize() {
 
 void autonomous() {
   if(!robot::chassis) initChassis();
-  routines.at(selection).run();
+  routines[selection].run();
 }
 
 void opcontrol() {
+  robot::screen::state = screenMode::notification;
+
   if(!robot::chassis) initChassis();
 
   while(true){
-    if(robot::controller.getDigital(okapi::ControllerDigital::L2)){
+    if(robot::controller.getDigital(okapi::ControllerDigital::A)){
       robot::chassis->getModel()->tank(robot::controller.getAnalog(okapi::ControllerAnalog::leftY) * 0.5,
                                        robot::controller.getAnalog(okapi::ControllerAnalog::leftY) * 0.5);
     }else{

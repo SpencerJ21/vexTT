@@ -6,7 +6,7 @@ std::vector<AutonomousRoutine> routines = {
 
 AutonomousRoutine(
   "Disable",
-  &screen::resources::whiteText,
+  &lv_style_plain,
   [](){},
   [](screen::ttField *field) { field->finishDrawing(); }
 )
