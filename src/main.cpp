@@ -11,7 +11,7 @@ inline void initChassis(){
                       .withSensors(robot::lEnc, robot::rEnc, robot::mEnc)
                       .withOdometry()
                       .withGearset(okapi::AbstractMotor::gearset::green)
-                      .withDimensions({{2.75_in, 4.625_in, 3.125_in, 2.75_in}, 360})
+                      .withDimensions({{2.75_in, 4.625_in, 3.125_in, 2.75_in}, 360}) // ODOM NEEDS DIFFERENT CHASSIS SCALES THAN THE CHASSIS, FIGURE THAT OUT
                       .withMotors(robot::lDrive, robot::rDrive)
                       .buildOdometry();
 
