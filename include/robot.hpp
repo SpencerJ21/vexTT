@@ -18,8 +18,9 @@ extern std::shared_ptr<okapi::ADIEncoder> lEnc;
 extern std::shared_ptr<okapi::ADIEncoder> rEnc;
 extern std::shared_ptr<okapi::ADIEncoder> mEnc;
 
-extern std::shared_ptr<okapi::OdomChassisController> chassis;
-extern std::shared_ptr<okapi::AsyncMotionProfileController> chassisMPC;
+extern std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> chassisModel;
+extern std::shared_ptr<okapi::OdomChassisController> chassisController;
+extern std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfiler;
 
 namespace screen{
   extern pros::Task *controller;

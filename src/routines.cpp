@@ -23,20 +23,20 @@ AutonomousRoutine(
   },
   [](){},
   [](){
-    robot::chassisMPC->loadPath("tt/nearCubeApproach", "nearCubeApproach");
-    robot::chassisMPC->loadPath("tt/nearCubeRecede", "nearCubeRecede");
-    robot::chassisMPC->loadPath("tt/nearZoneApproach", "nearZoneApproach");
+    robot::chassisProfiler->loadPath("tt/nearCubeApproach", "nearCubeApproach");
+    robot::chassisProfiler->loadPath("tt/nearCubeRecede", "nearCubeRecede");
+    robot::chassisProfiler->loadPath("tt/nearZoneApproach", "nearZoneApproach");
 
     robot::intake->controllerSet(1);
-    robot::chassisMPC->setTarget("nearCubeApproach");
-    robot::chassisMPC->waitUntilSettled();
+    robot::chassisProfiler->setTarget("nearCubeApproach");
+    robot::chassisProfiler->waitUntilSettled();
 
     robot::intake->controllerSet(0);
-    robot::chassisMPC->setTarget("nearCubeRecede", true);
-    robot::chassisMPC->waitUntilSettled();
+    robot::chassisProfiler->setTarget("nearCubeRecede", true);
+    robot::chassisProfiler->waitUntilSettled();
 
-    robot::chassisMPC->setTarget("nearZoneApproach");
-    robot::chassisMPC->waitUntilSettled();
+    robot::chassisProfiler->setTarget("nearZoneApproach");
+    robot::chassisProfiler->waitUntilSettled();
 
     robot::angler->moveAbsolute(910, 30);
   }
