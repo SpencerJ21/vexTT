@@ -13,8 +13,7 @@ std::shared_ptr<okapi::ADIEncoder> lEnc;
 std::shared_ptr<okapi::ADIEncoder> rEnc;
 std::shared_ptr<okapi::ADIEncoder> mEnc;
 
-std::shared_ptr<okapi::ThreeEncoderSkidSteerModel> chassisModel;
-std::shared_ptr<okapi::OdomChassisController> chassisController;
+std::shared_ptr<okapi::ChassisController> chassis;
 std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfiler;
 
 namespace screen {

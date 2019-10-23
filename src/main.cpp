@@ -7,35 +7,19 @@ using namespace okapi::literals;
 extern void screenControllerFN(void* param);
 
 inline void initChassis(){
-  robot::chassisController = std::make_shared<okapi::DefaultOdomChassisController>(
-    okapi::TimeUtilFactory().create(),
-    std::make_unique<okapi::ThreeEncoderOdometry>(
-      okapi::TimeUtilFactory().create(),
-      robot::chassisModel,
-      okapi::ChassisScales({{2.75_in, 4.625_in, 3.125_in, 2.75_in}, 360})
-    ),
-    std::make_shared<okapi::ChassisControllerIntegrated>(
-      okapi::TimeUtilFactory().create(),
-      robot::chassisModel,
-      std::make_unique<okapi::AsyncPosIntegratedController>(
-        robot::lDrive, okapi::AbstractMotor::gearset::green, 200, okapi::TimeUtilFactory().create()),
-      std::make_unique<okapi::AsyncPosIntegratedController>(
-        robot::rDrive, okapi::AbstractMotor::gearset::green, 200, okapi::TimeUtilFactory().create()),
-      okapi::AbstractMotor::gearset::green,
-      okapi::ChassisScales({{4.125_in, 1_in}, okapi::imev5GreenTPR})
-    )
-  );
-
-  robot::chassisController->startOdomThread();
+  robot::chassis = okapi::ChassisControllerBuilder()
+                      .withMotors(robot::lDrive, robot::rDrive)
+                      .withDimensions(okapi::ChassisScales({{4.125_in, 10_in}, okapi::imev5GreenTPR}))
+                      .build();
 
   robot::chassisProfiler = okapi::AsyncMotionProfileControllerBuilder()
-                      .withOutput(robot::chassisController)
+                      .withOutput(robot::chassis)
                       .withLimits({0, 0, 0})
                       .buildMotionProfileController();
 }
 
 void initialize() {
-  okapi::Logger::setDefaultLogger(std::make_shared<okapi::Logger>(std::make_unique<okapi::Timer>(), "/usd/tt/log.txt", okapi::Logger::LogLevel::debug));
+  okapi::Logger::setDefaultLogger(std::make_shared<okapi::Logger>(std::make_unique<okapi::Timer>(), "/ser/sout", okapi::Logger::LogLevel::debug));
 
   robot::angler = std::make_shared<okapi::Motor>(-1);
   robot::intake = std::make_shared<okapi::MotorGroup>(okapi::MotorGroup({-2,10}));
@@ -46,9 +30,16 @@ void initialize() {
   robot::rEnc = std::make_shared<okapi::ADIEncoder>(1,2);
   robot::mEnc = std::make_shared<okapi::ADIEncoder>(5,6);
 
-  robot::chassisModel = std::make_shared<okapi::ThreeEncoderSkidSteerModel>(
-    robot::lDrive, robot::rDrive, robot::lEnc, robot::mEnc, robot::rEnc, 200, 12000
-  );
+  robot::chassis = okapi::ChassisControllerBuilder()
+                      .withMotors(robot::lDrive, robot::rDrive)
+                      .withDimensions(okapi::ChassisScales({{4.125_in, 10_in}, okapi::imev5GreenTPR}))
+                      .build();
+
+  robot::chassisProfiler = okapi::AsyncMotionProfileControllerBuilder()
+                      .withOutput(robot::chassis)
+                      .withLimits({0, 0, 0})
+                      .buildMotionProfileController();
+
 
   robot::intake->setBrakeMode(okapi::AbstractMotor::brakeMode::brake);
 
@@ -67,7 +58,7 @@ void competition_initialize() {
 }
 
 void autonomous() {
-  if(!robot::chassisController) initChassis();
+  //if(!robot::chassis) initChassis();
   routines[selection].run();
 }
 
@@ -78,9 +69,9 @@ void opcontrol() {
 
   while(true){
     if(robot::controller.getDigital(okapi::ControllerDigital::A)){
-      robot::chassisModel->arcade(robot::controller.getAnalog(okapi::ControllerAnalog::leftY) * 0.5, 0);
+      robot::chassis->getModel()->arcade(robot::controller.getAnalog(okapi::ControllerAnalog::leftY) * 0.5, 0);
     }else{
-      robot::chassisModel->tank(robot::controller.getAnalog(okapi::ControllerAnalog::leftY),
+      robot::chassis->getModel()->tank(robot::controller.getAnalog(okapi::ControllerAnalog::leftY),
                                        robot::controller.getAnalog(okapi::ControllerAnalog::rightY));
     }
 

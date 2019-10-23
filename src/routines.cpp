@@ -1,6 +1,8 @@
 #include "routines.hpp"
 #include "robot.hpp"
 
+using namespace okapi::literals;
+
 int selection = 0;
 
 std::vector<AutonomousRoutine> routines = {
@@ -10,7 +12,13 @@ AutonomousRoutine(
   &lv_style_plain,
   [](screen::ttField *field) { field->finishDrawing(); },
   [](){},
-  [](){}
+  [](){
+    //robot::chassisProfiler->generatePath({{0_in, 0_in, 0_deg}, {2_ft, 2_ft, 90_deg}}, "A", {1, 2, 10});
+    //robot::chassisProfiler->setTarget("A");
+    //robot::chassisProfiler->waitUntilSettled();
+
+    robot::chassis->turnAngle(-90_deg);
+  }
 ),
 
 AutonomousRoutine(
