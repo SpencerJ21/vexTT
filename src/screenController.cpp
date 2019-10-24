@@ -8,7 +8,7 @@
 //extern const lv_img_t logo;
 
 void screenControllerFN(void* param){
-  std::cout << "screen controller started\n";
+  auto logger = okapi::Logger::getDefaultLogger();
 
   screen::resources::initialize();
 
@@ -34,13 +34,13 @@ void screenControllerFN(void* param){
 
   //diagnostic
 
-  std::cout << "screen controller initialized - entering main control loop\n";
+  LOG_INFO(std::string("ScreenController: Initialized"));
 
   while(true){
     switch(robot::screen::state){
       case screenMode::notification:
         if(lastScreenState != robot::screen::state){
-          std::cout << "screen controller - initializing notification mode\n";
+          LOG_INFO(std::string("ScreenController: Entering notification mode"));
 
           if(field) {
             delete field;
@@ -64,7 +64,7 @@ void screenControllerFN(void* param){
         break;
       case screenMode::selection:
         if(lastScreenState != robot::screen::state){
-          std::cout << "screen controller - initializing selection mode\n";
+          LOG_INFO(std::string("ScreenController: Entering selection mode"));
 
           lv_obj_clean(scr);
 
@@ -154,7 +154,7 @@ void screenControllerFN(void* param){
         break;
       case screenMode::disabled:
         if(lastScreenState != robot::screen::state){
-          std::cout << "screen controller - disable mode\n";
+          LOG_INFO(std::string("ScreenController: Disabled"));
 
           if(field) {
             delete field;

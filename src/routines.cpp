@@ -45,8 +45,6 @@ AutonomousRoutine(
 
     robot::chassisProfiler->setTarget("nearZoneApproach");
     robot::chassisProfiler->waitUntilSettled();
-
-    robot::angler->moveAbsolute(910, 30);
   }
 )
 

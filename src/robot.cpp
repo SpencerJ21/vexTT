@@ -4,7 +4,7 @@ namespace robot {
 
 okapi::Controller controller;
 
-std::shared_ptr<okapi::Motor> angler;
+std::shared_ptr<Angler> angler;
 std::shared_ptr<okapi::MotorGroup> intake;
 std::shared_ptr<okapi::MotorGroup> lDrive;
 std::shared_ptr<okapi::MotorGroup> rDrive;
