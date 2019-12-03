@@ -25,6 +25,7 @@ void Angler::prime(){
 
 void Angler::reset(){
   target.store(restingPos);
+  controller->setTarget(target);
 }
 
 bool Angler::isSettled(){

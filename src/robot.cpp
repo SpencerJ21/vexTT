@@ -29,9 +29,9 @@ namespace screen {
 extern void screenControllerFN(void* param);
 
 std::atomic_int Angler::restingPos = 200;
-std::atomic_int Angler::primedPos = 1600;
-std::atomic_int Angler::pidThreshold = 1500;
-std::atomic_int Angler::verticalPos = 4500;
+std::atomic_int Angler::primedPos = 1400;
+std::atomic_int Angler::pidThreshold = 1600;
+std::atomic_int Angler::verticalPos = 4600;
 
 
 void initialize() {
@@ -39,7 +39,7 @@ void initialize() {
 
   robot::angler = std::make_shared<Angler>(
     std::make_shared<okapi::MotorGroup>(okapi::MotorGroup({-1, 7})),
-    okapi::IterativePosPIDController::Gains({0.00075, 0, 0.00005, 0}));
+    okapi::IterativePosPIDController::Gains({0.00065, 0, 0.00005, 0}));
     
   robot::intake = std::make_shared<okapi::MotorGroup>(okapi::MotorGroup({-2,10}));
   robot::lDrive = std::make_shared<okapi::MotorGroup>(okapi::MotorGroup({ 8, 9}));

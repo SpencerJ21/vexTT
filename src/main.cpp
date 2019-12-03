@@ -47,9 +47,9 @@ void opcontrol() {
 
   while(true){
 
-    // If A is pressed, lock control to forwards/backwards at half speed, otherwise do standard tank control
+    // If A is pressed, lock control to forwards/backwards at 40% speed, otherwise do standard tank control
     if(robot::controller.getDigital(okapi::ControllerDigital::A)){
-      robot::chassis->getModel()->arcade(robot::controller.getAnalog(okapi::ControllerAnalog::leftY) * 0.5, 0);
+      robot::chassis->getModel()->arcade(robot::controller.getAnalog(okapi::ControllerAnalog::leftY) * 0.4, 0);
     }else{
       robot::chassis->getModel()->tank(robot::controller.getAnalog(okapi::ControllerAnalog::leftY),
                                        robot::controller.getAnalog(okapi::ControllerAnalog::rightY));
@@ -76,8 +76,8 @@ void opcontrol() {
 
     /*
      * Angler/Tray control (async)
-     * L1 -> reset/down tray position
-     * L2 -> prime tray (a little over halfway up)
+     * L1 -> prime tray (a little over halfway up)
+     * L2 -> reset/down tray position
      * L3/right -> stack/up tray position
      * down -> while held, stop task and retract, when released return to normal operation
     **/ 
@@ -85,10 +85,10 @@ void opcontrol() {
       robot::angler->stack();
 
     }else if(robot::controller.getDigital(okapi::ControllerDigital::L1)){
-      robot::angler->reset();
+      robot::angler->prime();
 
     }else if(robot::controller.getDigital(okapi::ControllerDigital::L2)){
-      robot::angler->prime();
+      robot::angler->reset();
 
     }else if(buttonDown.changed()){
       if(buttonDown.isPressed()){
