@@ -93,7 +93,7 @@ void opcontrol() {
     }else if(buttonDown.changed()){
       if(buttonDown.isPressed()){
         robot::angler->getTask()->suspend();
-        robot::angler->getMotor()->moveVoltage(-12000);
+        robot::angler->getMotor()->moveVoltage(-6000);
 
       }else{
         robot::angler->getTask()->resume();

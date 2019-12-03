@@ -78,19 +78,10 @@ void Angler::loop(){
   while(true){
     currentPos = motor->getPosition();
 
-    if(target <= restingPos){
-      if(currentPos < restingPos){
-        power = 0;
-      }else{
-        power = -0.8;
-      }
-
+    if(target == verticalPos && currentPos <= pidThreshold){
+      power = 1;
     }else{
-      if(currentPos < pidThreshold){
-        power = 1;
-      }else{
-        power = controller->step(currentPos);
-      }
+      power = controller->step(currentPos);
     }
 
     motor->controllerSet(power);
