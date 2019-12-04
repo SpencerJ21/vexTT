@@ -5,7 +5,7 @@ Angler::Angler(std::shared_ptr<okapi::AbstractMotor> imotor, okapi::IterativePos
 
   target.store(0);
   tare();
-  controller->setOutputLimits(0.4, -0.4);
+  controller->setOutputLimits(0.35, -0.6);
 }
 
 Angler::~Angler(){
