@@ -1,4 +1,5 @@
 #include "main.h"
+#include "gif-pros/gifclass.hpp"
 #include "robot.hpp"
 #include "routines.hpp"
 #include <vector>
@@ -6,6 +7,32 @@
 #include <iostream>
 
 //extern const lv_img_t logo;
+
+lv_color_t getRainbowColorFromSeed(uint16_t colorSeed){
+  return LV_COLOR_MAKE(
+
+  static_cast<uint8_t>(
+    colorSeed <= 0x0FF ? 0xFF :
+    colorSeed <= 0x1FF ? 0x1FF - colorSeed :
+    colorSeed <= 0x3FF ? 0 :
+    colorSeed <= 0x4FF ? colorSeed - 0x400 :
+    0xFF
+  ),
+
+  static_cast<uint8_t>(
+    colorSeed <= 0x0FF ? colorSeed :
+    colorSeed <= 0x2FF ? 0xFF :
+    colorSeed <= 0x3FF ? 0x3FF - colorSeed :
+    0
+  ),
+
+  static_cast<uint8_t>(
+    colorSeed <= 0x1FF ? 0 :
+    colorSeed <= 0x2FF ? colorSeed - 0x200 :
+    colorSeed <= 0x4FF ? 0xFF :
+    0x5FF - colorSeed
+  ));
+}
 
 void screenControllerFN(void* param){
   auto logger = okapi::Logger::getDefaultLogger();
@@ -32,6 +59,13 @@ void screenControllerFN(void* param){
   lv_obj_t* confirm_button;
   bool selected;
 
+  //EZ
+  lv_obj_t *gifContainer;
+  static lv_style_t rainbowStyle;
+  lv_style_copy(&rainbowStyle, &lv_style_plain);
+  Gif *ezgif;
+  uint16_t colorSeed = 0;
+  
   //diagnostic
 
   LOG_INFO(std::string("ScreenController: Initialized"));
@@ -45,6 +79,11 @@ void screenControllerFN(void* param){
           if(field) {
             delete field;
             field = nullptr;
+          }
+
+          if(ezgif) {
+            delete ezgif;
+            ezgif = nullptr;
           }
 
           lv_obj_clean(scr);
@@ -65,6 +104,11 @@ void screenControllerFN(void* param){
       case screenMode::selection:
         if(lastScreenState != robot::screen::state){
           LOG_INFO(std::string("ScreenController: Entering selection mode"));
+
+          if(ezgif) {
+            delete ezgif;
+            ezgif = nullptr;
+          }
 
           lv_obj_clean(scr);
 
@@ -137,6 +181,39 @@ void screenControllerFN(void* param){
 
         break;
 
+      case screenMode::ez:
+        if(lastScreenState != robot::screen::state){
+          LOG_INFO(std::string("ScreenController: Entering ezgif mode"));
+
+          if(field) {
+            delete field;
+            field = nullptr;
+          }
+
+          lv_obj_clean(scr);
+          
+          gifContainer = lv_obj_create(scr, NULL);
+          lv_obj_set_style(gifContainer, &lv_style_transp);
+          lv_obj_set_size(gifContainer, 240, 240);
+          lv_obj_set_pos(gifContainer, 120, 0);
+
+          ezgif = new Gif("/usd/EZ/EZlogo.gif", gifContainer);
+
+        }
+
+        rainbowStyle.body.main_color = getRainbowColorFromSeed(colorSeed);
+        rainbowStyle.body.grad_color = getRainbowColorFromSeed(colorSeed - 0xFF);
+
+        if(colorSeed < 0x5FF){
+          colorSeed += 8;
+        }else{
+          colorSeed = 0;
+        }
+
+        lv_obj_refresh_style(scr);
+
+        break;
+
       /*case screenMode::logo:
         if(lastScreenState != robot::screen::state){
           std::cout << "screen controller - initializing logo mode\n";
@@ -155,6 +232,11 @@ void screenControllerFN(void* param){
           if(field) {
             delete field;
             field = nullptr;
+          }
+          
+          if(ezgif) {
+            delete ezgif;
+            ezgif = nullptr;
           }
 
           lv_obj_clean(scr);

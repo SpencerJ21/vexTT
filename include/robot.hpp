@@ -3,7 +3,7 @@
 #include "mechanism/angler.hpp"
 
 enum class screenMode{
-  disabled, notification, selection
+  disabled, notification, selection, ez
 };
 
 namespace robot {
