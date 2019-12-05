@@ -60,6 +60,7 @@ void screenControllerFN(void* param){
   bool selected;
 
   //EZ
+  lv_obj_t *rainbowLayer;
   lv_obj_t *gifContainer;
   static lv_style_t rainbowStyle;
   lv_style_copy(&rainbowStyle, &lv_style_plain);
@@ -68,6 +69,7 @@ void screenControllerFN(void* param){
   
   //diagnostic
 
+  pros::delay(500);
   LOG_INFO(std::string("ScreenController: Initialized"));
 
   while(true){
@@ -191,14 +193,19 @@ void screenControllerFN(void* param){
           }
 
           lv_obj_clean(scr);
+
+          rainbowLayer = lv_obj_create(scr, NULL);
+          lv_obj_set_style(rainbowLayer, &rainbowStyle);
+          lv_obj_set_size(rainbowLayer, 480, 240);
           
-          gifContainer = lv_obj_create(scr, NULL);
+          gifContainer = lv_obj_create(rainbowLayer, NULL);
           lv_obj_set_style(gifContainer, &lv_style_transp);
           lv_obj_set_size(gifContainer, 240, 240);
           lv_obj_set_pos(gifContainer, 120, 0);
 
           ezgif = new Gif("/usd/EZ/EZlogo.gif", gifContainer);
-
+          
+          lastScreenState = robot::screen::state;
         }
 
         rainbowStyle.body.main_color = getRainbowColorFromSeed(colorSeed);

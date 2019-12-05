@@ -4,6 +4,7 @@
 
 using namespace okapi::literals;
 
+// defined in pathGen.cpp, will generate and rewrite all paths on the sd card
 extern void generatePaths();
 
 void disabled() {}
@@ -28,15 +29,14 @@ void autonomous() {
 }
 
 void opcontrol() {
-  /* this function runs when directed by a competition / tournament switch
-   * or when not connected to either
-  **/
+  // this function runs when directed by a competition / tournament switch
+  // or when not connected to either
   
   // ensure there is no velocity cap on the chassis
   robot::chassis->getModel()->setMaxVelocity(200);
   
-  // set the screen to display notification (random text for the time being)
-  robot::screen::state = screenMode::notification;
+  // set the screen to display ez logo gif
+  robot::screen::state = screenMode::ez;
 
   // disable the profile controller, as the driver will control it manually
   if (robot::chassisProfiler) robot::chassisProfiler->flipDisable(true);
